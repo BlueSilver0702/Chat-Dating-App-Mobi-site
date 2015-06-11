@@ -1,0 +1,68 @@
+{% extends 'app/layout.html.twig' %}
+
+{% block content %}
+        <div id="chat-container" class="chat-container">
+                <div class="chat-content orange"><!-- this is the wrapper for the content -->
+                    <div class="chat-content-inner"><!-- extra div for emulating position:fixed of the menu -->
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-8 col-lg-offset-2">
+                                    <div class="panel panel-primary panel-chatapp">
+                                        <div class="panel-heading">
+                                            <span class="glyphicon glyphicon-comment"></span> Chat
+                                        </div>
+                                        <div class="panel-body">
+                                            <ul class="chat">
+                                            {% for val in chats %}
+                                                {% if val.from_username != app.user.username %}
+                                                <li class="left clearfix">
+                                                    <span class="chat-img pull-left">
+                                                        <img src="{{ path('_apiGET_image') }}?filename={{ val.from_photo }}&width=80&height=80" alt="User Avatar" class="img-rounded">
+                                                    </span>
+                                                    <div class="chat-body clearfix">
+                                                        <div class="header">
+                                                            <strong class="primary-font">{{ val.from_username }}</strong> <small class="pull-right text-muted">
+                                                                <span class="glyphicon glyphicon-time"></span>{{ val.date_created.date|date("F jS \\a\\t g:ia", val.date_created.timezone) }}</small>
+                                                        </div>
+                                                        <p>{{ val.message }}</p>
+                                                    </div>
+                                                </li>
+                                                {% else %}
+                                                <li class="right clearfix">
+                                                    <span class="chat-img pull-right">
+                                                        <img src="{{ path('_apiGET_image') }}?filename={{ val.from_photo }}&width=80&height=80" alt="User Avatar" class="img-rounded img-chatter">
+                                                    </span>
+                                                    <div class="chat-body clearfix">
+                                                        <div class="header">
+                                                            <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>{{ val.date_created.date|date("F jS \\a\\t g:ia", val.date_created.timezone) }}</small>
+                                                            <strong class="pull-right primary-font">{{ val.from_username }}</strong>
+                                                        </div>
+                                                        <p>{{ val.message }}</p>
+                                                    </div>
+                                                </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="input-group">
+                                                <input id="btn-input" type="text" class="form-control" placeholder="Type your message here...">
+                                                <span class="input-group-addon btn btn-chatapp chat-add">
+                                                    Send
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </div><!-- /chat-content-inner -->
+        </div><!-- /chat-content -->
+</div><!-- /chat-container -->
+{% if app.request.query.get('chat_id') != '' %}
+<hr class="chat_add" data-url="{{ path('_api_messages_add', {'chat_id': app.request.query.get('chat_id')}) }}">
+{% else %}
+<hr class="chat_add" data-url="{{ path('_api_messages_add', {'participants': app.request.query.get('user')}) }}">
+{% endif %}
+{% include "partials/chat_tmpl.js.twig" %}
+{% endblock %}

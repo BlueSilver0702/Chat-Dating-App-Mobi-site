@@ -1,0 +1,24 @@
+<script id="momentTmpl" type="text/html">
+{% spaceless %}
+    <li class="text-left">
+        <a class="btn btn-default btn-sm btn-absolute btn-hover js-moment-like"
+            data-like-url="{{ path('_api_moments_like_moment_id', {'moment_id': 'MID'}) }}"
+            data-unlike-url="{{ path('_api_moments_unlike_moment_id', {'moment_id': 'MID'}) }}"
+            data-is-like="<@ if (isLike) { @>true<@ } else { @>false<@ } @>">
+                <span class="glyphicon glyphicon-heart-empty" ></span>
+        </a>
+        <@ if (width && height) { @>
+            <img src="{{ path('_apiGET_image') }}?filename=<@=image@>&width=<@=width@>&height=<@=height@>" width="<@=width@>" height="<@=height@>" alt="<@=name@>">
+        <@ } else { @>
+            <img />
+        <@ } @>
+        <p class="text-gray chatapp-stats"></br><em><span class="glyphicon glyphicon-comment"></span><@=totalComments@><span class="glyphicon glyphicon-heart"></span><@=totalLikes@></em></p>
+
+        <@=comments@>
+        <@ if (totalComments>3) { @>
+            <a class="showall js-pin-comments-showall" href="#"> Show <span class="count"><@=totalComments-3@></span> more comments... </a>
+        <@ } @>
+
+    </li>
+{% endspaceless %}
+</script>

@@ -1,0 +1,99 @@
+{% extends 'app/layout.html.twig' %}
+
+{% block content %}
+<script>var is_radar_page=false;</script>
+    <div id="chat-container" class="chat-container">
+            <div class="chat-content orange"><!-- this is the wrapper for the content -->
+                <div class="chat-content-inner"><!-- extra div for emulating position:fixed of the menu -->
+                    <!-- Top Navigation -->
+
+                    <div class="container">
+                        <div class="col-lg-8 col-lg-offset-2">
+                        <hr>
+                        <div class="row">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs chatapp">
+                                    <li class="active"><a href="#home" data-toggle="tab"><span class="glyphicon glyphicon-import">
+                                    </span>Inbox</a></li>
+                                    <li><a href="#profile" data-toggle="tab"><span class="glyphicon glyphicon-export"></span>
+                                        Sent</a></li>
+                                    </span></a></li>
+                                </ul>
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="home">
+                                        <div class="list-group">
+                                            {% set val_count = 0 %}
+                                            {% for val in msgs %}
+                                                {% if val.last_message.from_username != app.user.username %}
+                                                {% set val_count = val_count + 1 %}
+                                                <a href="{{ path('chat', {'chat_id':val.chat_id}) }}" class="list-group-item{% if val.participants[0].unread == 0 %} read{% endif %}">
+                                                    <div class="img-rounded chatapp-chatter-icon inbox b pull-left" style="margin-right:5px;margin-top:-5px" >
+                                                        <img src="{{ path('_apiGET_image') }}?filename={{ val.participants[0].photo }}&width=30&height=30" class="img-circle">
+                                                    </div>
+                                                    <span class="name" style="min-width: 120px;
+                                                        display: inline-block;">{{ val.participants[0].username }}</span>
+                                                    <span class="">{{ val.last_message.message }}</span>
+                                                    <span class="badge">{{ val.last_message.date_created.date|date("F jS \\a\\t g:ia", val.last_message.date_created.timezone) }}</span>
+                                                    {% if val.last_message.files|length > 0 %}
+                                                    <span class="pull-right"><span class="glyphicon glyphicon-camera"></span></span>
+                                                    {% endif %}
+                                                </a>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if val_count == 0 %}
+                                                <div class="list-group-item">
+                                                <span class="text-center">This tab is empty.</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade in" id="profile">
+                                        <div class="list-group">
+                                            {% set val_count = 0 %}
+                                            {% for val in msgs %}
+                                                {% if val.last_message.from_username == app.user.username %}
+                                                {% set val_count = val_count + 1 %}
+                                                <a href="{{ path('chat', {'chat_id':val.chat_id}) }}" class="list-group-item{% if val.participants[0].unread == 0 %} read{% endif %}">
+                                                    <div class="img-rounded chatapp-chatter-icon inbox b pull-left" style="margin-right:5px;margin-top:-5px" >
+                                                        <img src="{{ path('_apiGET_image') }}?filename={{ val.participants[0].photo }}&width=30&height=30" class="img-circle">
+                                                    </div>
+                                                    <span class="name" style="min-width: 120px;
+                                                        display: inline-block;">{{ val.participants[0].username }}</span>
+                                                    <span class="">{{ val.last_message.message }}</span>
+                                                    <span class="badge">{{ val.last_message.date_created.date|date("F jS \\a\\t g:ia", val.last_message.date_created.timezone) }}</span>
+                                                    {% if val.last_message.files|length > 0 %}
+                                                    <span class="pull-right"><span class="glyphicon glyphicon-camera"></span></span>
+                                                    {% endif %}
+                                                </a>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if val_count == 0 %}
+                                                <div class="list-group-item">
+                                                <span class="text-center">This tab is empty.</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade in" id="settings">
+                                        This tab is empty.</div>
+                                </div>
+                        </div>
+                    </div>
+                    </div>
+        </div><!-- /chat-content-inner -->
+    </div><!-- /chat-content -->
+</div><!-- /chat-container -->
+{% endblock %}
+
+{% block javascripts %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.2/masonry.pkgd.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <script src="{{ app.request.basepath }}/js/jquery.infieldlabel.min.js"></script>
+    <script src="{{ app.request.basepath }}/js/view.min.js?auto"></script>
+    <script src="{{ app.request.basepath }}/js/apis.js"></script>
+
+{% endblock %}

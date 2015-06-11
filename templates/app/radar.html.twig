@@ -1,0 +1,23 @@
+{% extends 'app/layout.html.twig' %}
+
+{% block app_content %}
+    <script>var is_radar_page = true;</script>
+    <div class="section-wrap clearfix">
+        <h1 class="title">Radar</h1>
+        <div class="section-text">
+            <p>Find out whose chatting near you</p>
+        </div>
+    </div>
+
+    <div id="radar" class="pins"></div>
+
+    <div class="page-loader"></div>
+
+    <div class="text-center">
+        <a href="#" class="js-loadmore-moments" data-page="1" data-url="{{ path('_api_contacts_search', {'type': 'all', 'distance': app.request.query.get('distance'), 'gender': app.request.query.get('gender')}) }}">
+            <span class="badge">Load more</span>
+        </a>
+    </div>
+
+    {% include "partials/radar_tmpl.js.twig" %}
+{% endblock %}

@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">My Contacts</h4>
+</div>
+<div class="modal-body">
+    <div class="media-list">
+        {% for friend in app.user.friends %}
+            {% set user = friend.__get('friend') %}
+            <div class="media">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default js-contact-favorite"
+                            data-favorite-url="{{ path('_api_contacts_favorite_username', {'username': user.username}) }}"
+                            data-unfavorite-url="{{ path('_api_contacts_unfavorite_username', {'username': user.username}) }}"
+                            data-is-favorite="true"
+                        >
+                        Unfollow
+                    </button>
+                </div>
+                <a class="pull-left" href="{{ path('profile', {'username': user.username}) }}">
+                    <img src="{{ path('_apiGET_image') }}?filename={{ user.photo }}&width=100&height=100" class="img-circle" />
+                </a>
+                <div class="media-body">
+                    <h2 class="media-heading">{{ user.username }}</h2>
+                    <p>{{ user.aboutme }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

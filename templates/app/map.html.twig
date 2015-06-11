@@ -1,0 +1,114 @@
+{% extends 'app/layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="//maps.googleapis.com/maps/api/js"></script>
+    <script type="text/javascript">
+        google.maps.event.addDomListener(window, "load", loadPins);
+
+        function loadPins() {
+            var mapOptions = {
+                zoom: 8,
+                zoomControl:true,
+                mapTypeControl: false,
+                panControl: false,
+                streetViewControl: false,
+                center: new google.maps.LatLng({{ app.user.latitude|default(0) }}, {{ app.user.longitude|default(0) }}),
+            };
+
+            gallPetersMap = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+            var myMarker = new google.maps.Marker({
+                position: new google.maps.LatLng({{ app.user.latitude|default(0) }}, {{ app.user.longitude|default(0) }}),
+                map: gallPetersMap,
+                title: "{{ app.user.username }}",
+                draggable:true,
+                icon: "//maps.google.com/mapfiles/ms/icons/green-dot.png"
+            });
+
+            {% for contact in contacts %}
+                {% if contact.latitude and contact.longitude %}
+                    new google.maps.Marker({
+                        position: new google.maps.LatLng({{ contact.latitude|default(0) }}, {{ contact.longitude|default(0) }}),
+                        map: gallPetersMap,
+                        title: "{{ contact.username }}",
+                        icon: "//maps.google.com/mapfiles/ms/icons/red-dot.png"
+                    });
+                {% endif %}
+            {% endfor %}
+
+            // configure
+            var maxWidth = $("html").hasClass("mobile") ? 116 : 232;
+            var $masonry = $(".location-board-pins").masonry({
+                gutter: 10,
+                columnWidth: maxWidth,
+                itemSelector: ".pin"
+            });
+            var pos_lat, pos_lng;    
+            google.maps.event.addListener(myMarker, 'dragend', function(evt){
+                pos_lat = evt.latLng.lat();
+                pos_lng = evt.latLng.lng();
+                if ($("#refresh_location")) $("#refresh_location").remove();
+                $("body.loggedin").prepend(
+                    '<button style="position:absolute;top:82px;right:15px;z-index:1000;" class="btn btn-sm btn-primary" id="refresh_location">Refresh Location</button>'
+                );
+                
+               $("#refresh_location").click(function(){
+                    location.href="{{ path('map') }}?lat="+pos_lat+"&lng="+pos_lng;
+               });
+            
+            });
+        }
+        {% if app.request.query.get('lat') %}
+        $(document).ready(function(){
+            $("body.loggedin").prepend(
+                '<button style="position:absolute;top:82px;right:15px;z-index:1000;" class="btn btn-sm btn-danger" id="refresh_location">Current Location</button>'
+            );
+            $("#refresh_location").click(function(){
+                location.href="{{ path('map') }}";
+            });
+        });
+        {% endif %}
+    </script>
+{% endblock %}
+
+{% block app_content %}
+    <div id="radar">
+        <div class="location-board-background"></div>
+        <div class="location-board-wrapper">
+            <div class="location-board-pins pins">
+                {% for contact in contacts %}
+                    <div class="pin">
+                        <div class="pin-wrapper">
+                            <div class="pin-image-action-button-wrapper">
+                                <div class="pin-image-wrapper">
+                                    <a href="{{ path('profile', {'username': contact.username}) }}">
+                                        <h4>{{ contact.username }}</h4>
+                                        <img data-src="{{ path('_apiGET_image') }}?filename={{ contact.photo }}" width="263" alt="{{ contact.username }}">
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="pin-meta">
+                                <p class="pin-description">{{ contact.aboutme }}</p>
+                            </div>
+
+                            <div class="pin-credits">
+                                <a href="{{ path('profile', {'username': contact.username}) }}">
+                                    <img data-src="{{ path('_apiGET_image') }}?filename={{ contact.photo }}&width=30&height=30" class="credit-img" />
+                                    <div class="credit-name">{{ contact.username }}</div>
+                                    <div class="credit-extra">{{ contact.region }}</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="page-loader"></div>
+        </div>
+    </div>
+
+    <div id="map-canvas"></div>
+{% endblock %}

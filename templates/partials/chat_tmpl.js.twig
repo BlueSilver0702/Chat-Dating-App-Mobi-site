@@ -1,0 +1,16 @@
+<script id="chatTmpl" type="text/html">
+{% spaceless %}
+    <li class="right clearfix">
+        <span class="chat-img pull-right">
+            <img src="{{ path('_apiGET_image') }}?filename={{ app.user.photo }}&width=80&height=80" alt="User Avatar" class="img-rounded img-chatter">
+        </span>
+        <div class="chat-body clearfix">
+            <div class="header">
+                <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>a minutes ago</small>
+                <strong class="pull-right primary-font">{{ app.user.username }}</strong>
+            </div>
+            <p><@=msg_content@></p>
+        </div>
+    </li>
+{% endspaceless %}
+</script>

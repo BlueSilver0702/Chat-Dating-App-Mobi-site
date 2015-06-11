@@ -1,0 +1,178 @@
+{% extends 'app/layout.html.twig' %}
+
+{% block javascripts %}
+    <script>var is_home_page = true, is_radar = false, is_radar_page=false;</script>
+    {{ parent() }}
+    <script src="{{ app.request.basepath }}/js/jquery.imagesloaded.js"></script>
+    <script src="{{ app.request.basepath }}/js/jquery.wookmark.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="chat-container" class="chat-container">
+        <div class="chat-content orange"><!-- this is the wrapper for the content -->
+            <div class="chat-content-inner"><!-- extra div for emulating position:fixed of the menu -->
+                <div class="container" >
+                    <div class="row" >
+                        {% if login is defined %}
+                        <div class="alert alert-info alert-dismissable text-center">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><strong>Welcome!</strong> You have successfully signed up for Chatapp. <strong>Explore members chats</strong> and moments below to get started!</h4>
+                        </div>
+                        {% endif %}
+                        <div class="alert alert-warning alert-dismissable text-center" id="messageStatus">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><strong>You have new messages!</strong> <strong>3 new messages</strong> are waiting in your inbox. <a href="#"><strong>Click to check them out</strong></a></h4>
+                        </div>
+                            <div class="jumbotron home">
+                                <div class="row" style="margin-bottom:20px;">
+                                    <div class="col-lg-4 text-center">
+                                    <h2>Popular Members</h2>
+                                    </div>
+                                    <div class="col-lg-8 text-left">
+                                    <blockquote>
+                                        <p>Check out the members who are chatting close to you. </br> Start a chat and meet new people today!</p>
+                                    </blockquote>
+                                    </div>
+                                </div>
+                                <div class="row text-center" >
+                                    <div class="col-lg-3">
+                                        <div class="panel panel-default">
+                                         <div class="panel-body">
+                                            <img class="img-responsive img-thumbnail" src="/api/image?filename=7rCqrDWQE58Ql0VEeAk6Zf8jDlvvu39W.jpeg&width=30&height=30" />
+                                            <p>Gavin</p>
+
+                                            <a class="btn btn-default btn-lg btn-block">Chat with me <span class="glyphicon glyphicon-comment"></span></a>
+                                         </div>
+                                     </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="panel panel-default">
+                                         <div class="panel-body">
+                                             <img class="img-responsive img-thumbnail" src="/api/image?filename=Svl65Q1bvUbWwqjxChaFKzbBYvnrYSy1.jpeg&width=30&height=30" />
+
+                                             <p>ylrehd cute</p>
+
+                                            <a class="btn btn-default btn-lg btn-block">Chat with me <span class="glyphicon glyphicon-comment"></span></a>
+                                         </div>
+                                     </div>
+                                     </div>
+                                     <div class="col-lg-3">
+                                        <div class="panel panel-default">
+                                         <div class="panel-body">
+                                             <img class="img-responsive img-thumbnail" src="/api/image?filename=v08vwWugxG7Hadv9OqHrRrTa7o1OyngM.jpeg&width=30&height=30" />
+                                            <p>gurdeep singh</p>
+
+                                            <a class="btn btn-default btn-lg btn-block">Chat with me <span class="glyphicon glyphicon-comment"></span></a>
+                                         </div>
+                                     </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="panel panel-default">
+                                         <div class="panel-body">
+                                             <img class="img-responsive img-thumbnail" src="/api/image?filename=1EEeBzHFgYS7GVEbKNfgQkwoewr1Zr9P.jpeg&width=30&height=30" />
+                                             <p>Pati34</p>
+
+                                            <a class="btn btn-default btn-lg btn-block">Chat with me <span class="glyphicon glyphicon-comment"></span></a>
+                                         </div>
+                                     </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div><!-- /row -->
+                    <div class="row">
+                        <div class="jumbotron home">
+                                <div class="row" style="margin-bottom:20px;">
+                                    <div class="col-lg-4 text-center">
+                                    <h2>Popular Moments</h2>
+                                    </div>
+                                    <div class="col-lg-8 text-left">
+                                    <blockquote>
+                                        <p>These are the moments people near you are most interested in. </br> Post some moments of your own and see what happens next!</p>
+                                    </blockquote>
+                                    </div>
+                                </div>
+                                <div class="row text-left" >
+                                    <div class="col-lg-3">
+                                        <div class="panel panel-default">
+                                         <div class="panel-body">
+                                            <a class="btn btn-default btn-sm btn-absolute btn-hover" ><span class="glyphicon glyphicon-heart-empty" ></span></a>
+                                            <img class="img-responsive img-thumbnail" src="/api/image?filename=SzCLyZW0RJQnMXdHSlmbikiOXLZLJgnH.jpeg&width=232&height=232" />
+                                            <p class="text-gray chatapp-stats"></br><em><span class="glyphicon glyphicon-comment"></span> 32 <span class="glyphicon glyphicon-heart"></span> 132</em>
+                                            </p>
+                                            <ul class="list-group">
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon c pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">s_o_nluva</h4> Sexy </div> </div></li>
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon a pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">Hitesh Baradiya</h4> looking happy </div> </div></li>
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon e pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">wallythelovdoc</h4> Are you single? </div> </div></li>
+                                            </ul>
+                                         </div>
+                                     </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="panel panel-default">
+                                         <div class="panel-body">
+                                            <a class="btn btn-default btn-sm btn-absolute btn-hover" ><span class="glyphicon glyphicon-heart-empty" ></span></a>
+                                             <img class="img-responsive img-thumbnail" src="images/moment2.jpg" />
+                                            <p class="text-gray chatapp-stats"></br><em><span class="glyphicon glyphicon-comment"></span> 22 <span class="glyphicon glyphicon-heart"></span> 723</em>
+                                            </p>
+                                            <ul class="list-group">
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon f pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">wallythelovdoc</h4> Nic pic dear </div> </div></li>
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon e pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">s_o_nluva</h4> wonderful </div> </div></li>
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon d pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">devyn</h4> hi </div> </div></li>
+                                            </ul>
+                                         </div>
+                                     </div>
+                                     </div>
+                                     <div class="col-lg-3">
+                                        <div class="panel panel-default">
+                                         <div class="panel-body">
+                                            <a class="btn btn-default btn-sm btn-absolute btn-hover" ><span class="glyphicon glyphicon-heart-empty" ></span></a>
+                                             <img class="img-responsive img-thumbnail" src="images/moment3.jpg" />
+                                            <p class="text-gray chatapp-stats"></br><em><span class="glyphicon glyphicon-comment"></span> 12 <span class="glyphicon glyphicon-heart"></span> 43</em>
+                                            </p>
+                                            <ul class="list-group">
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon d pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">kir</h4> It cool </div> </div></li>
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon c pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">jonah__Barney</h4> Are you single </div> </div></li>
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon a pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">s_o_nluva</h4> Love your smile so beautiful </div> </div></li>
+                                            </ul>
+                                         </div>
+                                     </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="panel panel-default">
+                                         <div class="panel-body">
+                                            <a class="btn btn-default btn-sm btn-absolute btn-hover" ><span class="glyphicon glyphicon-heart-empty" ></span></a>
+                                             <img class="img-responsive img-thumbnail" src="images/moment4.jpg" />
+                                            <p class="text-gray chatapp-stats"></br><em><span class="glyphicon glyphicon-comment"></span> 90 <span class="glyphicon glyphicon-heart"></span> 54</em>
+                                            </p>
+                                            <ul class="list-group">
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon a pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">jonah__Barney</h4> Nice </div> </div></li>
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon e pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">s_o_nluva</h4> Hi </div> </div></li>
+                                                <li class="inactive list-group-item"><div class="media"><div class="img-rounded chatapp-chatter-icon f pull-left" ></div> </a> <div class="media-body"> <h4 class="media-heading">hittu98</h4> Nice pic </div> </div></li>
+                                            </ul>
+                                         </div>
+                                     </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div><!-- /row -->
+                     <div class="row" >
+                        <ul id="tiles">
+                           <!-- These is where we place content loaded from the Wookmark API -->
+                        </ul>
+                        <div id="loader">
+                            <div id="loaderCircle" align="center" style="text-align:center;"><img src="{{ app.request.basepath }}/images/ajax-loader.gif" / ></div>
+                          </div>
+                    </div><!-- /row -->
+              </div><!-- /container -->
+            </div><!-- /chat-content-inner -->
+        </div><!-- /chat-content -->
+</div><!-- /chat-container -->
+
+<div class="text-center">
+    <a href="#" class="js-loadmore-moments" data-page="1" data-url="{{ path('_api_moments_search', {'type': 'all'}) }}">
+        <span class="badge">Load more</span>
+    </a>
+</div>
+{% include "partials/home_moment_tmpl.js.twig" %}
+{% include "partials/home_moment_comment_tmpl.js.twig" %}
+{% endblock %}

@@ -1,0 +1,13 @@
+body {
+    background:#fff;
+    margin:10px;
+    padding:0;
+    color:#000;
+    font:normal 14px/20px Helvetica,sans-serif;
+}
+a:after {
+    content:" (" attr(href) ") ";
+}
+.toolbar,.toolbar-alt,.slide,footer,.back {
+    display: none;
+}

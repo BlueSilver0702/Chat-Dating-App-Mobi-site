@@ -1,0 +1,29 @@
+<script id="radarTmpl" type="text/html">
+{% spaceless %}
+    <div class="pin-wrapper">
+        <div class="pin-image-action-button-wrapper">
+            <div class="pin-image-wrapper">
+                <a href="{{ path('_apiGET_image') }}?filename=<@=image@>" class="view" rel="radar">
+                    <h4><@=name@></h4>
+                    <@ if (width && height) { @>
+                        <img data-src="{{ path('_apiGET_image') }}?filename=<@=image@>&width=<@=width@>&height=<@=height@>" width="<@=width@>" height="<@=height@>" alt="<@=name@>" style="background-color:<@=color@>">
+                    <@ } else { @>
+                        <img />
+                    <@ } @>
+                </a>
+            </div>
+        </div>
+        <div class="pin-meta">
+            <p class="pin-description"><@=aboutme@></p>
+        </div>
+
+        <div class="pin-credits">
+            <a href="{{ path('profile', {'username': 'USERNAME'}) }}">
+                <img data-src="{{ path('_apiGET_image') }}?filename=<@=photo@>&width=30&height=30" class="credit-img" />
+                <div class="credit-name"><@=username@></div>
+                <div class="credit-extra"><@=region@></div>
+            </a>
+        </div>
+    </div>
+{% endspaceless %}
+</script>

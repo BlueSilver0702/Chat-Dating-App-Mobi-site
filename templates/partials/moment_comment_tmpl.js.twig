@@ -1,0 +1,13 @@
+<script id="momentCommentTmpl" type="text/html">
+{% spaceless %}
+    <li class="pin-comment" <@ if (index>=3) { @>style="display:none"<@ } @>>
+        <div class="commenter-thumb">
+            <a href="{{ path('profile', {'username': 'USERNAME'}) }}"><img data-src="{{ path('_apiGET_image') }}?filename=<@=photo@>&width=30&height=30" /></a>
+        </div>
+        <div class="commenter-text">
+            <a href="{{ path('profile', {'username': 'USERNAME'}) }}"><@=user@></a>
+            <p><@=comment@></p>
+        </div>
+    </li>
+{% endspaceless %}
+</script>

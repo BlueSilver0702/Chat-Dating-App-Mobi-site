@@ -1,0 +1,197 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ app.request.basepath }}/css/component.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="{{ app.request.basepath }}/css/demo.css" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+
+{% block javascripts %}
+    <script>var is_home_page = true, is_radar = false, is_radar_page=false;</script>
+    {{ parent() }}
+    <script src="{{ app.request.basepath }}/js/classie.js"></script>
+    <script src="{{ app.request.basepath }}/js/sidebarEffects.js"></script>
+    <script src="{{ app.request.basepath }}/js/jquery.imagesloaded.js"></script>
+    <script src="{{ app.request.basepath }}/js/jquery.wookmark.min.js"></script>
+    <script src="{{ app.request.basepath }}/js/apis.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="chat-container" class="chat-container">
+        <nav class="chat-menu chat-effect-11" id="menu-11">
+                  <form action="{{ path('login_check') }}" method="post" class="col-lg-10 col-lg-offset-1 js-form-registration">
+                        <h3 class="text-white">
+                            Sign in account
+                        </h3>
+                        <p class="text-white">
+                          Complete fields bellow
+                        </p>
+                        <div class="form-group">
+                           <input type="text" name="_username" class="form-control" placeholder="Username" required="required" value="{{ last_username|default('') }}" />
+                        </div>
+                        <div class="form-group">
+                           <input type="password" name="_password" class="form-control" placeholder="Password" required="required" />
+                        </div>
+                        <div class="form-group">
+                           <button type="submit" class="btn btn-block btn-chatapp">Sign in</button>
+                        </div>
+                        <div class="form-group">
+                           <p class="text-white">Don't have an account? <a href="{{ path('register') }}" class="js-toggle-signup">Register</a></p>
+                        </div>
+                   </form>
+        </nav>
+        <!-- content push wrapper -->
+        <div class="chat-pusher">
+            <div class="chat-content orange"><!-- this is the wrapper for the content -->
+                <div class="chat-content-inner"><!-- extra div for emulating position:fixed of the menu -->
+                    <!-- Top Navigation -->
+                    <nav class="navbar navbar-default" role="navigation">
+                      <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                          </button>
+                          <a class="navbar-brand chat-trigger" data-effect="chat-effect-11" href="#"><img class="img-brand img-responsive" src="{{ app.request.basepath }}/images/logohdflat.png" / ></a>
+                        </div>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top:10px">
+                          <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Download the App</a>
+                              <ul class="dropdown-menu">
+                                <li><a class="download-btn applestore" href="https://itunes.apple.com/us/app/chatapp-meet-share-socialize/id767196673?mt=8" target="_blank" title="App Store"></a></li>
+                                <li><a class="download-btn googleplay" href="https://play.google.com/store/apps/details?id=com.guiang.chatapp&hl=en" target="_blank" title="Google Play"></a></li>
+                                <li><a class="download-btn androidmarket" href="http://www.amazon.com/Guiang-Inc-ChatApp/dp/B00H1O4UCW/ref=sr_1_2?ie=UTF8&qid=1387580253&sr=8-2&keywords=chatapp" target="_blank" title="Android Market"></a></li>
+                              </ul>
+                            </li>
+                            <li><a href="{{ path('register') }}">Sign Up</a></li>
+                          </ul>
+                        </div><!-- /.navbar-collapse -->
+                      </div><!-- /.container-fluid -->
+                    </nav>
+                    <div class="container">
+                      <div class="row" >
+                            <div class="jumbotron day">
+                                <div class="row" >
+                                    <div class="col-lg-6 text-white" >
+                                      <h1 class="big on text-center animated fadeInRight delay1s">They met on</h1>
+                                      <img class="img-responsive brand on animated fadeInRight delay1s" src="{{ app.request.basepath }}/images/logohdflat.png" / >
+                                      <div class="col-lg-12 text-center animated fadeInRight delay2s" style="background-color:rgba(34,34,34,0.5);padding:10px;border-radius:8px" >
+                                          <h3 ><em><strong>Meet</strong></em> new people around your location</h3>
+                                          <h3 ><em><strong>Chat</strong></em> with those who share your interests</h3>
+                                          <h3 ><em><strong>Share</strong></em> moments with your friends</h3>
+                                      </div>
+                                      <div class="col-lg-12 animated fadeInRight delay3s" >
+                                        <a class="btn btn-chatapp btn-block on btn-lg brand chat-trigger" data-effect="chat-effect-11" role="button">Sign In</a>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6" >
+                                        <div class="marketing-device animated fadeInUp rotateInUpLeft delay3s">
+                                            <div class="iphone5">
+                                                <div class="fixed-video-block">
+                                                    <a href="#" data-toggle="modal" data-target="#videoModal">
+                                                        <div class="banner-mask">
+                                                            <span class="video-banner-more"></span>
+                                                            <img src="{{ app.request.basepath }}/images/slide-anim.jpg" alt="ChatApp Mobile App" />
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <ul id="tiles">
+                           <!-- These is where we place content loaded from the Wookmark API -->
+                        </ul>
+                        <div id="loader">
+                            <div id="loaderCircle" align="center" style="text-align:center;"><img src="{{ app.request.basepath }}/images/ajax-loader.gif" / ></div>
+                          </div>
+                    </div><!-- /row -->
+                  </div><!-- /container -->
+                </div><!-- /chat-content-inner -->
+            </div><!-- /chat-content -->
+        </div><!-- /chat-pusher -->
+    </div><!-- /chat-container -->
+    <div class="modal fade" id="termsModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">ChatApp</h4>
+                </div>
+                <div class="modal-body">
+                    <h5>CHATAPP TERMS AND CONDITIONS</h5>
+                    <p>
+                        1. GENERAL
+                        <br/>1.1. By installing the ChatApp Application (as defined below), you agree to be bound by these terms of use ("appterms"). Please review them carefully before installation and/or acceptance.</p>
+                    <p>
+                        2. DEFINITIONS
+                        <br/>The "Application" shall mean the software provided by Guiang, Inc to offer services related to Guiang, Inc, Guiang, Inc's services and its partners' services, to be used on Apple iOS and Android OS devices and any upgrades
+                        from time to time and any other software or documentation which enables the use of the Application.</p>
+                    <p>
+                        3. DATA PROTECTION
+                        <br/>Any personal information you supply to Guiang, Inc when using the Application will be used by Guiang, Inc in accordance with Guiang's privacy policy.</p>
+                    <p>
+                        4. Guiang, Inc.com
+                        <br/>The Application allows you to access certain functionality available on the Guiang, Inc.com website. Such access will be governed by the Guiang, Inc Website Terms of Use.</p>
+                    <p>
+                        5. PASSENGER TERMS & CONDITIONS The Guiang, Inc Terms and Conditions for Passengers and Baggage can be viewed here: <a href="http://chatapp.mobi" target="_blank">http://chatapp.mobi</a>.</p>
+                    <p>
+                        6. PROPRIETARY RIGHTS AND LICENCE
+                        <br/>6.1. All trade marks, copyright, database rights and other intellectual property rights of any nature in the Application together with the underlying software code are owned either directly by Guiang, Inc or by Guiang,
+                        Inc's licensors.
+                        <br/>6.2. Guiang, Inc hereby grants you a worldwide, non-exclusive, royalty-free revocable licence to use the Application for your business and personal use in accordance with these appterms.</p>
+                    <p>
+                        7. CONDITIONS OF USE
+                        <br/>7.1. You will not, nor allow third parties on your behalf to (i) make and distribute copies of the Application (ii) attempt to copy, reproduce, alter, modify, reverse engineer, disassemble, decompile, transfer, exchange
+                        or translate the Application; or (iii) create derivative works of the Application of any kind whatsoever.
+                        <br/>7.2. The Application is currently made available to you free of charge for your personal, non-commercial use. Guiang, Inc reserves the right to amend or withdraw the Application, or charge for the application or service
+                        provided to you in accordance with these appterms, at any time and for any reason.
+                        <br/>7.3. You acknowledge that the terms of agreement with your respective mobile network provider ('Mobile Provider') will continue to apply when using the Application. As a result, you may be charged by the Mobile Provider
+                        for access to network connection services for the duration of the connection while accessing the Application or any such third party charges as may arise. You accept responsibility for any such charges that arise.
+                        <br/>7.4. If you are not the bill payer for the mobile telephone or handheld device being used to access the Application, you will be assumed to have received permission from the bill payer for using the Application.</p>
+                    <p>
+                        8. AVAILABILITY
+                        <br/>8.1. This Application is available to handheld mobile devices running Apple iOS and Android OS Operating Systems. Guiang, Inc will use reasonable efforts to make the Application available at all times. However you acknowledge
+                        the Application is provided over the internet and mobile networks and so the quality and availability of the Application may be affected by factors outside Guiang, Inc's reasonable control.
+                        <br/>8.2. Guiang, Inc, its group of companies and sub-contractors do not accept any responsibility whatsoever for unavailability of the Application, or any difficulty or inability to download or access content or any other
+                        communication system failure which may result in the Application being unavailable. 8.3. Guiang, Inc will not be responsible for any support or maintenance for the Application.</p>
+                    <p>
+                        9. SYSTEM REQUIREMENTS
+                        <br/>9.1. In order to use the Application, you are required to have a compatible mobile telephone or handheld device, internet access, and the necessary minimum specifications ('Software Requirements').
+                        <br/>9.2. The Software Requirements are as follows: Apple iOS devices running iOS 4 or iOS 5, and Android OS devices running Android OS 2.1 up to OS 2.3; Language: English, Italian, German, Spanish, French.
+                        <br/>9.3. The version of the Application software may be upgraded from time to time to add support for new functions and services.</p>
+                    <p>
+                        10. TERMINATION
+                        <br/>10.1. Guiang, Inc may terminate use of the Application at any time by giving notice of termination to you.
+                        <br/>10.2. Upon any termination, (a) the rights and licenses granted to you herein shall terminate; (b) you must cease all use of the Software;</p>
+                    <p>
+                        11. LIMITATION OF LIABILITY
+                        <br/>11.1. In no event will Guiang, Inc be liable for any direct, indirect, special, punitive, exemplary or consequential losses or damages of whatsoever kind arising out of your use or access to the Application, including
+                        loss of profit or the like whether or not in the contemplation of the parties, whether based on breach of contract, tort (including negligence), product liability or otherwise. 11.2. Guiang, Inc is not liable to you
+                        for any damage or alteration to your equipment including but not limited to computer equipment, handheld device or mobile telephones as a result of the installation or use of the Application.
+                        <br/>11.3. Nothing in these Appterms shall exclude or limit Guiang, Inc's liability for death or personal injury caused by negligence or for fraud or fraudulent misrepresentation or any other liability which cannot be excluded
+                        or limited under applicable law.</p>
+                    <p>
+                        12. DISCLAIMER OF WARRANTIES
+                        <br/>To the maximum extent permitted by law, and for the avoidance of doubt, save for section 2 of the Supply of Goods and Services Act 1982, Guiang, Inc hereby disclaims all implied warranties with regard to the Application.
+                        The Application and software are provided "as is" and "as available" without warranty of any kind.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="#" class="js-loadmore-moments" data-page="1" data-url="{{ path('_api_moments_gsearch', {'type': 'all'}) }}">
+            <span class="badge">Load more</span>
+        </a>
+    </div>
+
+    {% include "partials/home_moment_tmpl.js.twig" %}
+    {% include "partials/home_moment_comment_tmpl.js.twig" %}
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'app/layout.html.twig' %}
+
+{% block app_content %}
+    <div class="section-wrap clearfix">
+        <h1 class="title"><img src="{{ path('_apiGET_image') }}?filename={{ user.photo }}&width=100&height=100" class="img-circle" title="{{ user.username }}" /></h1>
+        <div class="section-text">
+            <dl class="dl-horizontal">
+                {% for prop in ['username', 'name', 'gender', 'region', 'interest', 'aboutme', 'greeting'] %}
+                    {% set value = user.__get(prop)|default('N/A') %}
+                    <dt>{{ prop|title }}</dt>
+                    {% if prop == 'interest' %}
+                        <dd>{{ value|replace({'|': ', '}) }}</dd>
+                    {% else %}
+                        <dd>{{ value }}</dd>
+                    {% endif %}
+                {% endfor %}
+
+                {% if is_granted('ROLE_ADMIN') and user.id != app.user.id %}
+                    <dt>{% if user.background %}<img src="{{ path('_apiGET_image') }}?filename={{ user.background }}&width=100&height=100" class="img-thumbnail" title="{{ user.username }}" />{% endif %}</dt>
+                    <dd>
+                        {% if user.background %}
+                            <button type="button" class="btn btn-default js-profile-reset-background"
+                                data-url="{{ path('_api_profile_reset_photo', {'username': user.username, 'is_background': true}) }}"
+                            >
+                                <em class="icon icon-picture"></em> Reset Background
+                            </button>
+                            <br />
+                        {% endif %}
+
+                        {% if user.photo %}
+                            <button type="button" class="btn btn-default js-profile-reset-photo" data-url="{{ path('_api_profile_reset_photo', {'username': user.username}) }}"
+                            >
+                                <em class="icon icon-picture"></em> Reset Photo
+                            </button>
+                            <br />
+                        {% endif %}
+
+                        <button type="button" class="btn btn-default js-profile-delete"
+                            data-url="{{ path('_api_profilePOST_delete') }}"
+                            data-username="{{ user.username }}"
+                        >
+                            <em class="icon icon-trash"></em> Delete Profile
+                        </button>
+                    </dd>
+                {% else %}
+                    <dt></dt>
+                    <dd>
+                        <button type="button" class="btn btn-default js-profile-report"
+                            data-url="{{ path('_api_profilePOST_report') }}"
+                            data-username="{{ user.username }}"
+                        >
+                            <em class="icon icon-block"></em> Report Profile
+                        </button>
+                    </dd>
+                    <hr>
+                    <dd>
+                        <a href="{{ path('chat', {'user':user.username}) }}" class="btn btn-default js-profile-report">
+                            Send Message
+                        </a>
+                    </dd>
+                {% endif %}
+            </dl>
+        </div>
+    </div>
+
+    <div id="moments" class="pins"></div>
+
+    <div class="page-loader"></div>
+
+    <div class="text-center">
+        <a href="#" class="js-loadmore-moments" data-page="1" data-url="{{ path('_api_moments_search', {'username': user.username}) }}">
+            <span class="badge">Load more</span>
+        </a>
+    </div>
+
+    {% include "partials/moment_tmpl.js.twig" %}
+    {% include "partials/moment_comment_tmpl.js.twig" %}
+{% endblock %}

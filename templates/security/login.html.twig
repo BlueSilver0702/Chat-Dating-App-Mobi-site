@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <header class="toolbar-alt">
+        <ul class="clearfix">
+            <li class="logo"><a href="{{ path('homepage') }}" class="sprites-chatapp-text">ChatApp - Chat and meet new people</a></li>
+            <li><a href="{{ path('homepage') }}#purpose">Purpose</a></li>
+            <li><a href="{{ path('homepage') }}#product">Product</a></li>
+            <li><a href="{{ path('homepage') }}#team">Team</a></li>
+        </ul>
+    </header>
+
+    <section id="info" class="clearfix">
+        {% include "partials/signin.html.twig" %}
+    </section>
+{% endblock %}

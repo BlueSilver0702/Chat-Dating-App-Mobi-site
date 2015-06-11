@@ -1,0 +1,71 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ app.request.basepath }}/css/component.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="{{ app.request.basepath }}/css/demo.css" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ app.request.basepath }}/js/apis.js"></script>
+
+{% endblock %}
+
+{% block header %}
+    <header class="toolbar-alt">
+        <nav class="navbar navbar-default" role="navigation">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle hidden-lg hidden-md hidden-sm" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand chat-trigger" data-effect="chat-effect-11" href="{{ path('home') }}"><img class="img-brand img-responsive" src="{{ app.request.basepath }}/images/logohdflat.png" / ></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top:10px">
+              <ul class="nav navbar-nav navbar-right">
+                {% include "partials/prefer_tmpl.twig" %}
+                <li class="" id="filter_map"><a href="{{ path('map') }}" title="Map"><i class="icon icon-location"></i></a></li>
+                <li id="mail-alert"><a class="icon icon-mail" href="{{ path('msg') }}"></a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ path('_apiGET_image') }}?filename={{ app.user.photo }}&width=30&height=30" class="img-circle" title="{{ app.user.username }}" /> {{ app.user.username }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="icon icon-home-outline" href="{{ path('profile', {'username': app.user.username}) }}">Your Profile & Moments</a></li>
+                        <li><a class="icon icon-cog" href="{{ path('settings') }}">Settings</a></li>
+                        <li><a class="icon icon-contacts" href="{{ path('following') }}" data-toggle="modal" data-target="#contact-modal">My Contacts</a></li>
+                        <li class="divider"></li>
+                        <li><a class="icon icon-lock" href="{{ path('logout') }}">Logout</a></li>
+                    </ul>
+                </li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+        <hr class="msg_alert" data-url="{{ path('_api_messages_open_chats') }}" style="display:none;">
+        <script>
+            var filter_moment_path = '{{ path('dashboard') }}';
+            var filter_radar_path = '{{ path('radar') }}';
+            var is_radar = '{{ app.request.attributes.get('_route') }}';
+            var filter_para1 = {{ app.request.query.get('distance')?app.request.query.get('distance'):0 }};
+            var filter_para2 = {{ app.request.query.get('radar')?app.request.query.get('radar'):0 }};
+        </script>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <section id="info" class="app clearfix">
+        {% block app_content %}{% endblock %}
+    </section>
+
+    <div id="contact-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+{% endblock %}

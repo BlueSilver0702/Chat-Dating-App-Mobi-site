@@ -1,0 +1,14 @@
+<script id="momentCommentTmpl" type="text/html">
+{% spaceless %}
+    <ul class="list-group" <@ if (index>=3) { @>style="display:none"<@ } @>>
+        <li class="inactive list-group-item">
+            <div class="media">
+                <div class="img-rounded chatapp-chatter-icon pull-left" >
+                    <img data-src="{{ path('_apiGET_image') }}?filename=<@=photo@>&width=30&height=30" width="30" height="30" />
+                </div>
+                <div class="media-body"> <h4 class="media-heading"><@=user@></h4><@=comment@></div>
+            </div>
+        </li>
+    </ul>
+{% endspaceless %}
+</script>

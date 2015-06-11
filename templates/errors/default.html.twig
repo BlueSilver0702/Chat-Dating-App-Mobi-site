@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% set error = true %}
+
+{% block content %}
+    <div id="main">
+        <h1>Uh Oh!</h1>
+        <h2>This is very frustrating.</h2>
+        <img src="{{ app.request.basepath }}/images/shatner.gif" alt="Uh Oh!">
+        <p><a href="{{ path('homepage') }}" class="sprites-chatapp-white">chatapp</a></p>
+    </div>
+{% endblock %}

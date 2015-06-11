@@ -1,0 +1,172 @@
+{% extends 'app/layout.html.twig' %}
+
+{% block app_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                {% if error is defined and error %}
+                    <div class="alert alert-danger fade in">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <p>{{ error|default('An error occurred on the server.') }}</p>
+                    </div>
+                {% endif %}
+
+                <form class="{{ path('settings') }}" method="POST" enctype="multipart/form-data">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 id="account-basics"><i class="icon icon-cog-5"></i> Account Basics</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="profile_username">Username (Char ID)</label>
+                                <input type="text" name="profile[username]" id="profile_username" class="form-control" placeholder="Username" value="{{ app.user.username }}" disabled="disabled" />
+                            </div>
+                            <div class="form-group">
+                                <label for="profile_email">Email</label>
+                                <input type="email" name="profile[email]" id="profile_email" class="form-control" placeholder="Email" value="{{ app.user.email }}" />
+                            </div>
+                            <div class="form-group">
+                                <label for="profile_password">Password</label>
+                                <a href="#" class="text-danger js-password-change">Change your password...</a>
+
+                                <div class="password-fields js-password-fields" style="display:none">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">New</span>
+                                        <input type="password" name="profile[password_old]" class="form-control" />
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Old</span>
+                                        <input type="password" name="profile[password_new]" class="form-control" />
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Confirm</span>
+                                        <input type="password" name="profile[password_confirm]" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile_gender_male">Gender</label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="profile[gender]" id="profile_gender_male" value="m" {% if app.user.gender|lower == 'male' %}checked="checked"{% endif %} /> Male
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="profile[gender]" id="profile_gender_female" value="f" {% if app.user.gender|lower == 'female' %}checked="checked"{% endif %} /> Female
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 id="profile"><i class="icon icon-attach-5"></i> Profile</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="profile_name">Name</label>
+                                <input type="text" name="profile[name]" id="profile_name" class="form-control" placeholder="Name" value="{{ app.user.name }}" />
+                            </div>
+                            <div class="form-group">
+                                <label for="profile_photo">Picture</label>
+                                <input type="file" name="profile_photo" id="profile_photo" class="form-control" />
+
+                                {% if app.user.photo %}
+                                    <div class="help-block"><img src="{{ path('_apiGET_image') }}?filename={{ app.user.photo }}&width=100&height=100" title="{{ app.user.username }}" /></div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="profile_birthday_year">Birthday</label>
+                                <select name="profile[birthday][year]" id="profile_birthday_year">
+                                    <option value=""></option>
+                                    {% for year in range('now'|date('Y') - 120, 'now'|date('Y')) %}
+                                        <option value="{{ year }}" {% if app.user.birthday and app.user.birthday|date('Y') == year %}selected="selected"{% endif %}>{{ year }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select name="profile[birthday][month]" id="profile_birthday_month">
+                                    <option value=""></option>
+                                    {% for month in 1..12 %}
+                                        <option value="{{ month }}" {% if app.user.birthday and app.user.birthday|date('m') == month %}selected="selected"{% endif %}>{{ month }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select name="profile[birthday][day]" id="profile_birthday_day">
+                                    <option value=""></option>
+                                    {% for day in 1..31 %}
+                                        <option value="{{ day }}" {% if app.user.birthday and app.user.birthday|date('d') == day %}selected="selected"{% endif %}>{{ day }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile_ethnicity">Ethnicity</label>
+                                <select type="text" name="profile[ethnicity]" id="profile_ethnicity" class="form-control">
+                                    <option value=""></option>
+                                    {% for ethnicity in ['White Caucasian', 'Asian', 'Latino / Hispanic', 'Black', 'Middle Eastern', 'Mixed'] %}
+                                        <option value="{{ ethnicity }}" {% if app.user.ethnicity == ethnicity %}selected="selected"{% endif %}>{{ ethnicity }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile_region">Region</label>
+                                <select type="text" name="profile[region]" id="profile_region" class="form-control">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 id="extra"><i class="icon icon-cloud-1"></i> extra</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                {% set interest = app.user.interest|split('|') %}
+                                <label for="profile_interest_1">Interest</label>
+                                <input type="text" name="profile[interest][1]" id="profile_interest_1" class="form-control" placeholder="Interest 1" value="{{ interest[0]|default() }}" /><br />
+                                <input type="text" name="profile[interest][2]" id="profile_interest_2" class="form-control" placeholder="Interest 2" value="{{ interest[1]|default() }}" /><br />
+                                <input type="text" name="profile[interest][3]" id="profile_interest_3" class="form-control" placeholder="Interest 3" value="{{ interest[2]|default() }}" />
+                            </div>
+                            <div class="form-group">
+                                <label for="profile_aboutme">About Me</label>
+                                <textarea name="profile[aboutme]" id="profile_aboutme" class="form-control" placeholder="About Me">{{ app.user.aboutme }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile_greeting">Greeting</label>
+                                <textarea name="profile[greeting]" id="profile_greeting" class="form-control" placeholder="Greeting">{{ app.user.greeting }}</textarea>
+                            </div>
+                            {{ app.request.cookies.get("prefer") }}
+                            <div class="form-group">
+                                <label for="profile_kilometer">Prefer Kilometers or Miles</label>
+                                {% if prefer == '' %}
+                                <label class="radio-inline">
+                                    <input type="radio" name="profile[prefer]" id="profile_kilometer" value="kilometer" {% if app.request.cookies.get("prefer") == 'kilometer' %}checked="checked"{% endif %} /> Kilometers
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="profile[prefer]" id="profile_mile" value="mile" {% if app.request.cookies.get("prefer") == 'mile' or app.request.cookies.get("prefer") == '' %}checked="checked"{% endif %} /> Miles
+                                </label>
+                                {% else %}
+                                <label class="radio-inline">
+                                    <input type="radio" name="profile[prefer]" id="profile_kilometer" value="kilometer" {% if prefer == 'kilometer' %}checked="checked"{% endif %} /> Kilometers
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="profile[prefer]" id="profile_mile" value="mile" {% if prefer == 'mile' or prefer == '' %}checked="checked"{% endif %} /> Miles
+                                </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-block btn-primary">Update</button>
+                </form>
+            </div>
+
+            <div class="col-md-3">
+                <div class="settings-sidebar affix">
+                    <ul class="nav nav-stacked">
+                        <li><a href="#account-basics">Account Basics</a></li>
+                        <li><a href="#profile">Profile</a></li>
+                        <li><a href="#extra">Extra</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

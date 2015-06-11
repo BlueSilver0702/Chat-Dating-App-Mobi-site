@@ -1,0 +1,74 @@
+{% block prefer_content %}
+    <li class="dropdown" id="filter_moment">
+        <a href="#" class="dropdown-toggle" data-toggle="" title="Moments"><i class="icon icon-users"></i></a>
+        <ul class="dropdown-menu filter autosize {% if not app.user.latitude or not app.user.longitude %}js-radar-distance{% endif %}">
+            <li><a><b>Filter Moments</b></a></li>
+            <li><a href="#"><label><input type="checkbox" id="ck_male" checked="checked">Male Only</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="ck_female" checked="checked">Female Only</label></a></li>
+            <li class="divider"></li>
+            {% if prefer is defined and prefer != '' %}
+            {% if prefer == 'kilometer' %}
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="1">10 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="2">100 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="3">1,000 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="4">2,500 kilometers</label></a></li>
+            {% else %}
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="1">10 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="2">100 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="3">1,000 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="4">2,500 miles</label></a></li>
+            {% endif %}
+            {% else %}
+            {% if app.request.cookies.get("prefer") == 'kilometer' %}
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="1">10 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="2">100 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="3">1,000 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="4">2,500 kilometers</label></a></li>
+            {% else %}
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="1">10 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="2">100 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="3">1,000 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="4">2,500 miles</label></a></li>
+            {% endif %}
+            {% endif %}
+            <li><a href="#"><label><input type="radio" name="ra_miles1" value="5" checked="checked">All</label></a></li>
+            <li class="center"><button class="btn btn-sm btn-primary">Apply</button></li>
+        </ul>
+    </li>
+    <li class="dropdown" id="filter_radar">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Radar"><i class="icon icon-target"></i></a>
+        <ul class="dropdown-menu filter autosize {% if not app.user.latitude or not app.user.longitude %}js-radar-distance{% endif %}">
+            <li><a><b>Filter Radar</b></a></li>
+            <li><a href="#"><label><input type="checkbox" id="ck_male" checked="checked">Male Only</label></a></li>
+            <li><a href="#"><label><input type="checkbox" id="ck_female" checked="checked">Female Only</label></a></li>
+            <li class="divider"></li>
+            {% if prefer is defined and prefer != '' %}
+            {% if prefer == 'kilometer' %}
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="1">10 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="2">100 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="3">1,000 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="4">2,500 kilometers</label></a></li>
+            {% else %}
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="1">10 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="2">100 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="3">1,000 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="4">2,500 miles</label></a></li>
+            {% endif %}
+            {% else %}
+            {% if app.request.cookies.get("prefer") == 'kilometer' %}
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="1">10 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="2">100 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="3">1,000 kilometers</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="4">2,500 kilometers</label></a></li>
+            {% else %}
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="1">10 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="2">100 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="3">1,000 miles</label></a></li>
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="4">2,500 miles</label></a></li>
+            {% endif %}
+            {% endif %}
+            <li><a href="#"><label><input type="radio" name="ra_miles" value="5" checked="checked">Recent</label></a></li>
+            <li class="center"><button class="btn btn-sm btn-primary">Apply</button></li>
+        </ul>
+    </li>
+{% endblock %}

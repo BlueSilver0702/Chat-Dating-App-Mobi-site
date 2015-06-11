@@ -1,0 +1,24 @@
+{% extends 'app/layout.html.twig' %}
+
+{% block app_content %}
+    <script>var is_radar_page = false;</script>
+    <div class="section-wrap clearfix">
+        <h1 class="title">Moments</h1>
+        <div class="section-text">
+            <p>See what the ChatApp community is buzzing about and browse through our moments database.</p>
+        </div>
+    </div>
+
+    <div id="moments" class="pins"></div>
+
+    <div class="page-loader"></div>
+
+    <div class="text-center">
+        <a href="#" class="js-loadmore-moments" data-page="1" data-url="{{ path('_api_moments_search', {'type': 'all', 'distance': app.request.query.get('distance'), 'gender': app.request.query.get('gender')}) }}">
+            <span class="badge">Load more</span>
+        </a>
+    </div>
+
+    {% include "partials/moment_tmpl.js.twig" %}
+    {% include "partials/moment_comment_tmpl.js.twig" %}
+{% endblock %}

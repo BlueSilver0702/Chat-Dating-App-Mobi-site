@@ -1,0 +1,90 @@
+<script id="momentTmpl" type="text/html">
+{% spaceless %}
+    <div class="pin-wrapper">
+        <div class="pin-image-action-button-wrapper">
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="pin-action pin-action-delete">
+                    <button type="button" class="btn btn-default js-moment-delete"
+                            data-url="{{ path('_api_moments_delete_moment_id', {'moment_id': 'MID'}) }}"
+                        >
+                        <em class="icon icon-trash"></em>
+                    </button>
+                </div>
+            {% else %}
+                <div class="pin-action pin-action-block">
+                    <button type="button" class="btn btn-default js-moment-block"
+                            data-url="{{ path('_api_moments_block_moment_id', {'moment_id': 'MID'}) }}"
+                        >
+                        <em class="icon icon-block"></em>
+                    </button>
+                </div>
+            {% endif %}
+
+            <div class="pin-action pin-action-like">
+                <button type="button" class="btn btn-default js-moment-like"
+                        data-like-url="{{ path('_api_moments_like_moment_id', {'moment_id': 'MID'}) }}"
+                        data-unlike-url="{{ path('_api_moments_unlike_moment_id', {'moment_id': 'MID'}) }}"
+                        data-is-like="<@ if (isLike) { @>true<@ } else { @>false<@ } @>"
+                    >
+                    <em class="icon icon-heart<@ if (!isLike) { @>-empty<@ } @>"></em>
+                </button>
+            </div>
+            <div class="pin-image-wrapper">
+                <a href="{{ path('_apiGET_image') }}?filename=<@=image@>" title="<@=name@>" class="view" rel="moment">
+                    <h4><@=name@></h4>
+                    <@ if (width && height) { @>
+                        <img data-src="{{ path('_apiGET_image') }}?filename=<@=image@>&width=<@=width@>&height=<@=height@>" width="<@=width@>" height="<@=height@>" alt="<@=name@>" style="background-color:<@=color@>">
+                    <@ } else { @>
+                        <img />
+                    <@ } @>
+                </a>
+            </div>
+        </div>
+
+        <div class="pin-meta">
+            <p class="pin-description"><@=name@></p>
+            <div class="pin-social-meta">
+                <a href="3" class="comments">
+                    <em class="icon icon-comment"></em>
+                    <em class="pin-social-meta-count"><@=totalComments@></em>
+                </a>
+                <a href="#" class="likes">
+                    <em class="icon icon-heart-filled"></em>
+                    <em class="pin-social-meta-count "><@=totalLikes@></em>
+                </a>
+            </div>
+        </div>
+
+        <div class="pin-credits">
+            <a href="{{ path('profile', {'username': 'USERNAME'}) }}">
+                <img data-src="{{ path('_apiGET_image') }}?filename=<@=photo@>&width=30&height=30" class="credit-img" />
+                <div class="credit-name"><@=username@></div>
+                <div class="credit-extra"><@=date_created.date.substring(0, 10)@></div>
+            </a>
+        </div>
+
+        <div class="pin-comment-list">
+            <ul><@=comments@></ul>
+            <@ if (totalComments>3) { @>
+                <a class="showall js-pin-comments-showall" href="#"> Show <span class="count"><@=totalComments-3@></span> more comments... </a>
+            <@ } @>
+        </div>
+
+        <div class="pin-new-comment-item clearfix">
+            <div class="commenter-thumb">
+                <a href="{{ path('profile', {'username': app.user.username}) }}"><img data-src="{{ path('_apiGET_image') }}?filename={{ app.user.photo }}&width=30&height=30" /></a>
+            </div>
+            <div class="commenter-comment">
+                <form action="{{ path('_api_moments_add_comment') }}" class="js-form-moment-comments">
+                    <input type="hidden" name="moment_id" value="<@=id@>" />
+                    <input type="hidden" name="username" value="<@=username@>" />
+                    <div class="form-group">
+                        <textarea name="comment" class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-primary">Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endspaceless %}
+</script>
